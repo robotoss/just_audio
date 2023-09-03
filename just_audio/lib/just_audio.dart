@@ -101,6 +101,7 @@ class AudioPlayer {
   bool _disposed = false;
   _InitialSeekValues? _initialSeekValues;
   final AudioPipeline _audioPipeline;
+  bool _isFirstSeek = true;
 
   PlaybackEvent _playbackEvent = PlaybackEvent();
   final _playbackEventSubject = BehaviorSubject<PlaybackEvent>(sync: true);
@@ -1127,7 +1128,10 @@ class AudioPlayer {
               prevPlaybackEvent,
               _playbackEvent));
           
-          await Future.delayed(const Duration(milliseconds: 1));
+           if(_isFirstSeek) {
+            _isFirstSeek = false;
+            await Future.delayed(const Duration(milliseconds: 1));
+          }
 
           await (await _platform)
               .seek(SeekRequest(position: position, index: index));
