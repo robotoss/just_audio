@@ -1126,6 +1126,9 @@ class AudioPlayer {
               PositionDiscontinuityReason.seek,
               prevPlaybackEvent,
               _playbackEvent));
+          
+          await Future.delayed(const Duration(milliseconds: 1));
+
           await (await _platform)
               .seek(SeekRequest(position: position, index: index));
         } finally {
